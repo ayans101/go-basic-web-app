@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"github.com/ayans101/go-basic-web-app/pkg/render"
 	"net/http"
+
+	"github.com/ayans101/go-basic-web-app/pkg/render"
 )
 
 //	Home is the home page handler
