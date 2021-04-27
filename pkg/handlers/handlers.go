@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/ayans101/go-basic-web-app/pkg/config"
@@ -30,6 +31,11 @@ func NewHandlers(r *Repository) {
 
 //	Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	remoteIP := r.RemoteAddr
+	fmt.Println(m.App.Session)
+	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+	fmt.Println(m.App.Session)
+
 	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
 }
 
@@ -38,6 +44,9 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	//	perform some logic
 	stringMap := make(map[string]string)
 	stringMap["test"] = "Hello again"
+
+	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+	stringMap["remote_ip"] = remoteIP
 
 	//	send the data to the template
 	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
